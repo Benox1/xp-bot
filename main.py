@@ -113,7 +113,7 @@ async def on_ready():
     print(f"📊 Serveurs: {len(bot.guilds)}")
     give_voice_xp.start()
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, 
-                                                        name="les vocaux | !help"))
+                                                        name="!level | !leaderboard | !help"))
 
 @bot.event
 async def on_voice_state_update(member, before, after):
