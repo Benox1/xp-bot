@@ -208,7 +208,7 @@ async def level(ctx, member: discord.Member = None):
     if xp_needed <= 0: xp_needed = 100
         percent = max(0, min(100, int((xp_in_level / xp_needed) * 100)))
     embed = discord.Embed(
-        title=f"📊 Profil de {member.name}",
+        title=f"📊 Profil de {member.display_name}",
         color=discord.Color.blurple()
     )
     embed.add_field(name="Niveau", value=f"**{data['level']}**", inline=True)
@@ -239,10 +239,13 @@ async def leaderboard(ctx):
     
     for idx, (user_id, xp, level) in enumerate(leaderboard_data, 1):
         try:
-            user = await bot.fetch_user(user_id)
+            # On récupère le membre du serveur pour avoir son pseudo local
+            member = ctx.guild.get_member(user_id) 
+            name = member.display_name if member else (await bot.fetch_user(user_id)).display_name
+            
             medal = ["🥇", "🥈", "🥉"][idx - 1] if idx <= 3 else f"{idx}️⃣"
             embed.add_field(
-                name=f"{medal} {user.name}",
+                name=f"{medal} {name}", # Affiche le pseudo ici
                 value=f"**Niveau {level}** • {xp} XP",
                 inline=False
             )
