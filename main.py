@@ -53,6 +53,8 @@ def calculate_xp_for_level(level):
     Niveau 3: 600 XP (100 + 200 + 300)
     Niveau 4: 1000 XP (100 + 200 + 300 + 400)
     """
+    if level <= 1:
+        return 0    
     return 100 * level * (level + 1) // 2
 
 def get_level_from_xp(xp):
@@ -202,7 +204,9 @@ async def level(ctx, member: discord.Member = None):
     xp_next_level = calculate_xp_for_level(data['level'] + 1)
     xp_in_level = data['xp'] - xp_current_level
     xp_needed = xp_next_level - xp_current_level
-    
+
+    if xp_needed <= 0: xp_needed = 100
+        percent = max(0, min(100, int((xp_in_level / xp_needed) * 100)))
     embed = discord.Embed(
         title=f"📊 Profil de {member.name}",
         color=discord.Color.blurple()
